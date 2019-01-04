@@ -43,7 +43,7 @@ def test(args, shared_model):
 	start = time.time()
 	vis_count = 0
 	while True:
-		video_count = 0
+		video_count = 1
 		reward_all_sum = 0
 		reward_all = 0
 		reward_all_ave = 0
