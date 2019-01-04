@@ -458,7 +458,8 @@ class Environment:
             self.trace_idx += 1
             if self.trace_idx >= len(self.all_cooked_time):
                 self.trace_idx = 0
-                self.video_idx += 1 % 2
+                self.video_idx += 1
+                self.video_idx = self.video_idx % 2
                 print('change test video') 
             self.cooked_time = self.all_cooked_time[self.trace_idx]
             self.cooked_bw = self.all_cooked_bw[self.trace_idx]
