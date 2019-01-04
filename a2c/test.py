@@ -85,7 +85,7 @@ def test(args, shared_model):
 					print('bad model ! just break this loop')
 					reward_all_ave = 0
 					break 
-				if video_count >= env.traces_len * 2:
+				if video_count > env.traces_len * 2:
 					reward_all_ave = reward_all_sum / video_count
 					break
 				action = 3
