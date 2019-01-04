@@ -38,7 +38,7 @@ def test(args, shared_model):
 	line_plot = vis.line(Y=np.array([0]), opts=dict(
 						xlabel='testing count',
 						ylabel='average reward',
-						title='v1'))
+						title='v2'))
 
 	start = time.time()
 	vis_count = 0
@@ -98,7 +98,7 @@ def test(args, shared_model):
 		vis_count += 1
 		reward_all_ave = max(reward_all_ave, 0)
 		vis.line(Y=np.array([reward_all_ave]), X=np.array([vis_count]), win=line_plot, update='append')
-		path = 'result-v1/actor.pt-' + str(vis_count)
+		path = 'result-v2/actor.pt-' + str(vis_count)
 		torch.save(model.state_dict(), path)
 
 		end = time.time()
