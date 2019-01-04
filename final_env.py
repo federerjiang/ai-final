@@ -469,7 +469,7 @@ class Environment:
 
 			# pick a random video trace
 			self.video_idx = np.random.randint(len(self.all_video_size))
-			print("video idx: ", self.video_idx)
+			# print("video idx: ", self.video_idx)
 			self.video_size = self.all_video_size[self.video_idx]
 			self.cdn_arrive_time = self.all_cdn_arrive_time[self.video_idx]
 			self.frame_time_len = self.all_frame_time_len[self.video_idx]

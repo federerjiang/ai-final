@@ -58,26 +58,46 @@ class Environment:
 
         self.skip_time_frame = 100000000
         
-        #self.last_mahimahi_time = self.cooked_time[self.mahimahi_ptr - 1]
-        self.video_size = {}  # in bytes
-        self.cdn_arrive_time = {}
-        self.frame_time_len = {}
-        self.gop_flag = {}
+        # video traces 
+        cooked_video_traces = os.listdir(self.video_size_file)
+        self.all_video_size = []
+        self.all_cdn_arrive_time = []
+        self.all_frame_time_len = []
+        self.all_gop_flag = []
 
-        for bitrate in range(BITRATE_LEVELS):
-            self.video_size[bitrate] = []
-            self.cdn_arrive_time[bitrate] = []
-            self.frame_time_len[bitrate] = []
-            self.gop_flag[bitrate] = []
-            cnt = 0
-            with open(self.video_size_file + str(bitrate)) as f:
-                for line in f:
-                    self.video_size[bitrate].append(float(line.split()[1]))
-                    self.frame_time_len[bitrate].append(1.0/float(line.split()[3]))
-                    self.gop_flag[bitrate].append(int(float(line.split()[2])))
-                    self.cdn_arrive_time[bitrate].append(float(line.split()[0]))
-                    cnt += 1
-        self.latency = self.frame_time_len[0][0] 
+        for cooked_video in cooked_video_traces:
+            video_size = {}  # in bytes
+            cdn_arrive_time = {}
+            frame_time_len = {}
+            gop_flag = {}
+
+            cooked_video_file = self.video_size_file + cooked_video + "/frame_trace_" 
+            for bitrate in range(BITRATE_LEVELS):
+                video_size[bitrate] = []
+                cdn_arrive_time[bitrate] = []
+                frame_time_len[bitrate] = []
+                gop_flag[bitrate] = []
+                cnt = 0
+                with open(cooked_video_file + str(bitrate)) as f:
+                    for line in f:
+                        video_size[bitrate].append(float(line.split()[1]))
+                        frame_time_len[bitrate].append(1.0/float(line.split()[3]))
+                        gop_flag[bitrate].append(int(float(line.split()[2])))
+                        cdn_arrive_time[bitrate].append(float(line.split()[0]))
+                        cnt += 1
+            self.all_video_size.append(video_size)
+            self.all_cdn_arrive_time.append(cdn_arrive_time)
+            self.all_frame_time_len.append(frame_time_len)
+            self.all_gop_flag.append(gop_flag)
+
+        # pick a random video trace
+        self.video_idx = 0
+        self.video_size = self.all_video_size[self.video_idx]
+        self.cdn_arrive_time = self.all_cdn_arrive_time[self.video_idx]
+        self.frame_time_len = self.all_frame_time_len[self.video_idx]
+        self.gop_flag = self.all_gop_flag[self.video_idx]
+
+        self.latency = self.frame_time_len[0][0]  
 
     def get_trace_id(self):
         return self.trace_idx
@@ -435,7 +455,9 @@ class Environment:
             #self.trace_idx = np.random.randint(len(self.all_cooked_time))
             self.trace_idx += 1
             if self.trace_idx >= len(self.all_cooked_time):
-                self.trace_idx = 0 
+                self.trace_idx = 0
+                self.video_idx += 1
+                print('change test video') 
             self.cooked_time = self.all_cooked_time[self.trace_idx]
             self.cooked_bw = self.all_cooked_bw[self.trace_idx]
        
@@ -445,25 +467,12 @@ class Environment:
 
             ADD_FRAME = 0
 
-            self.video_size = {}  # in bytes
-            self.cdn_arrive_time = {}
-            self.frame_time_len = {}
-            self.gop_flag = {}
-
-            for bitrate in range(BITRATE_LEVELS):
-                self.video_size[bitrate] = []
-                self.cdn_arrive_time[bitrate] = []
-                self.frame_time_len[bitrate] = []
-                self.gop_flag[bitrate] = []
-                cnt = 0
-                with open(self.video_size_file + str(bitrate)) as f:
-                    for line in f:
-                        self.video_size[bitrate].append(float(line.split()[1]))
-                        self.frame_time_len[bitrate].append(1.0/float(line.split()[3]))
-                        self.gop_flag[bitrate].append(int(float(line.split()[2])))
-                        self.cdn_arrive_time[bitrate].append(float(line.split()[0]))
-                        cnt += 1
-            self.latency = self.frame_time_len[0][0]
+            self.video_size = self.all_video_size[self.video_idx]
+            self.cdn_arrive_time = self.all_cdn_arrive_time[self.video_idx]
+            self.frame_time_len = self.all_frame_time_len[self.video_idx]
+            self.gop_flag = self.all_gop_flag[self.video_idx]
+        
+            self.latency = self.frame_time_len[0][0] 
 
             cdn_has_frame = []
 
