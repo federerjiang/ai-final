@@ -7,7 +7,7 @@ from args import Args
 from agent import agent
 from coordinator import coordinator
 from model import ActorCritic
-# from test import test
+from test import test
 
 
 if __name__ == '__main__':
