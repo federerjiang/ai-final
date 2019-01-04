@@ -2,6 +2,7 @@ import numpy as np
 import random
 import datetime
 import copy
+import os
 
 MILLISECONDS_IN_SECOND = 1000.0
 B_IN_MB = 1000000.0
