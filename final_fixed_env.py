@@ -456,7 +456,7 @@ class Environment:
             #self.trace_idx = np.random.randint(len(self.all_cooked_time))
             print('bw id: ', self.trace_idx)
             self.trace_idx += 1
-            if self.trace_idx > len(self.all_cooked_time):
+            if self.trace_idx >= len(self.all_cooked_time):
                 self.trace_idx = 0
                 self.video_idx += 1
                 self.video_idx = self.video_idx % 2
