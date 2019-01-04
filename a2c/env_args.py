@@ -16,4 +16,6 @@ class EnvArgs:
 		self.latency_penalty = 0.005
 
 		self.bw_trace = '../trace/network/final_network_trace/'
+		self.test_bw_trace = '../trace/network/test/'
 		self.video_size_files = '../trace/video/final_cooked_trace/'
+		self.test_video_size_files = '../trace/video/test/'
