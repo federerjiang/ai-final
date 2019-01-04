@@ -60,7 +60,7 @@ class EnvWrap(env.Environment):
 		for time_interval, frame_size in zip(self.time_intervals, self.send_data_sizes):
 			if time_interval > 0 and frame_size > 0:
 				thps = frame_size / time_interval / 1000000
-				break
+				# break
 		thp = np.array(thps).mean()
 
 		# get gop sizes of 500k and 1200k
