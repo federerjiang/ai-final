@@ -40,7 +40,7 @@ def test(args, shared_model):
 						# ylabel='average reward',
 						# title='v1'))
 
-	reward_log = open('reward_log.txt', 'w')
+	reward_log = open('reward_log.txt', 'w+')
 	start = time.time()
 	vis_count = 0
 	while True:
@@ -107,7 +107,7 @@ def test(args, shared_model):
 		hours, rem = divmod(end-start, 3600)
 		minutes, seconds = divmod(rem, 60)
 
-		reward_log.write(str(vis_count) + ":	" + str(reward_all_ave))
+		reward_log.write(str(vis_count) + ":	" + str(reward_all_ave) + '\n')
 		print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
 		print("average reward of traces are: ", reward_all_ave)
 		print('saved one model in epoch:', vis_count)
