@@ -38,7 +38,7 @@ class ActorCritic(nn.Module):
 		split_3 = F.relu(self.a_conv3(inputs[:, 3:4, 0:16])).view(batch_size, -1)
 		split_4 = F.relu(self.a_fc4(inputs[:, 4:5, -1]))
 		split_5 = F.relu(self.a_fc5(inputs[:, 5:6, -1]))
-		split_6 = F.relu(self.a_fc6(inputs[:, 6:7, :2]))
+		split_6 = F.relu(self.a_fc6(inputs[:, 6:7, :2])).view(batch_size, -1)
 
 		merge = torch.cat((split_0, split_1, split_2, split_3, split_4, split_5, split_6), 1)
 		merge = merge.view(batch_size, -1)
@@ -52,7 +52,7 @@ class ActorCritic(nn.Module):
 		split_3 = F.relu(self.c_conv3(inputs[:, 3:4, 0:16])).view(batch_size, -1)
 		split_4 = F.relu(self.c_fc4(inputs[:, 4:5, -1]))
 		split_5 = F.relu(self.c_fc5(inputs[:, 5:6, -1]))
-		split_6 = F.relu(self.c_fc6(inputs[:, 6:7, :2]))
+		split_6 = F.relu(self.c_fc6(inputs[:, 6:7, :2])).view(batch_size, -1)
 
 		merge = torch.cat((split_0, split_1, split_2, split_3, split_4, split_5, split_6), 1)
 		merge = merge.view(batch_size, -1)
