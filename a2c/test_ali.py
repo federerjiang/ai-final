@@ -34,13 +34,12 @@ def test(args, shared_model):
 	state = env.reset()
 
 	training_time = 0
-	# vis = visdom.Visdom(env='final')
-	# line_plot = vis.line(Y=np.array([0]), opts=dict(
-						# xlabel='testing count',
-						# ylabel='average reward',
-						# title='v1'))
+	vis = visdom.Visdom(env='final')
+	line_plot = vis.line(Y=np.array([0]), opts=dict(
+						xlabel='testing count',
+						ylabel='average reward',
+						title='ali-v1'))
 
-	reward_log = open('reward_log.txt', 'w+')
 	start = time.time()
 	vis_count = 0
 	while True:
@@ -98,16 +97,14 @@ def test(args, shared_model):
 		# update the figure of average reward of all testing files
 		vis_count += 1
 		reward_all_ave = max(reward_all_ave, 0)
-		# vis.line(Y=np.array([reward_all_ave]), X=np.array([vis_count]), win=line_plot, update='append')
-		if reward_all_ave > 1:
-			path = 'result-v1-no/actor.pt-' + str(vis_count)
-			torch.save(model.state_dict(), path)
+		vis.line(Y=np.array([reward_all_ave]), X=np.array([vis_count]), win=line_plot, update='append')
+		path = 'ali-v1/actor.pt-' + str(vis_count)
+		torch.save(model.state_dict(), path)
 
 		end = time.time()
 		hours, rem = divmod(end-start, 3600)
 		minutes, seconds = divmod(rem, 60)
 
-		reward_log.write(str(vis_count) + ":	" + str(reward_all_ave) + '\n')
 		print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
 		print("average reward of traces are: ", reward_all_ave)
 		print('saved one model in epoch:', vis_count)

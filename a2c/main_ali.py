@@ -3,11 +3,11 @@ import torch.multiprocessing as mp
 # import multiprocessing as mp 
 import os
 
-from args_no_visdom import Args 
+from args_ali import Args 
 from agent import agent
 from coordinator import coordinator
 from model import ActorCritic
-from test_no_visdom import test
+from test_ali import test
 
 
 if __name__ == '__main__':
