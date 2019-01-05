@@ -14,7 +14,7 @@ class ActorCritic(nn.Module):
 		self.a_conv3 = nn.Conv1d(1, 128, 4) # block sizes 16 / 13
 		self.a_fc4 = nn.Linear(1, 128) # client rebuffer flag 1 / 1
 		self.a_fc5 = nn.Linear(1, 128) # cdn rebuffer flag 1 / 1
-		self.a_fc6 = nn.Linear(1, 128) # cdn rebuffer flag 2 / 2
+		self.a_fc6 = nn.Linear(2, 128) # cdn rebuffer flag 2 / 2
 		self.a_fc = nn.Linear(32 * 128, 128)
 		self.a_actor_linear = nn.Linear(128, self.a_dim)
 
@@ -25,7 +25,7 @@ class ActorCritic(nn.Module):
 		self.c_conv3 = nn.Conv1d(1, 128, 4) # block sizes 16 / 13
 		self.c_fc4 = nn.Linear(1, 128) # client rebuffer flag 1 / 1
 		self.c_fc5 = nn.Linear(1, 128) # cdn rebuffer flag 1 / 1
-		self.c_fc6 = nn.Linear(1, 128) # cdn rebuffer flag 1 / 2
+		self.c_fc6 = nn.Linear(2, 128) # cdn rebuffer flag 1 / 2
 		self.c_fc = nn.Linear(32 * 128, 128)
 		self.c_critic_linear = nn.Linear(128, 1)
 
