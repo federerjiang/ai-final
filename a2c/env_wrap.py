@@ -62,6 +62,8 @@ class EnvWrap(env.Environment):
 				thps.append(frame_size / time_interval) 
 				# break
 		thp = np.array(thps).mean() / 1000000
+		if thp != thp:
+			thp = self.state_gop[2, -1]
 
 		# get gop sizes of 500k and 1200k
 		for frame_tag, quality, frame_size in zip(self.frame_types, self.real_qualitys, self.send_data_sizes):
