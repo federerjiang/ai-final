@@ -3,7 +3,7 @@ import torch.multiprocessing as mp
 # import multiprocessing as mp 
 import os
 
-from args import Args 
+from args_no_visdom import Args 
 from agent import agent
 from coordinator import coordinator
 from model import ActorCritic
