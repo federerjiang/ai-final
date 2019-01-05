@@ -2,7 +2,7 @@ class EnvArgs:
 	def __init__(self):
 		# env settings
 		self.s_gop_len = 16 # gop based info
-		self.s_gop_info = 9 # or 7
+		self.s_gop_info = 8 # or 7
 		self.a_dim = 18
 		self.random_seed = 10 # 50
 		self.bitrate_levels = 2

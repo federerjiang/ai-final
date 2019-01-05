@@ -12,12 +12,12 @@ class ActorCritic(nn.Module):
 		self.a_fc1 = nn.Linear(1, 128) # last bit rate 1 / 1
 		self.a_conv2 = nn.Conv1d(1, 128 ,4) # throughput 16 / 13
 		self.a_conv3 = nn.Conv1d(1, 128, 4) # block sizes 16 / 13
-		self.a_conv4 = nn.Conv1d(1, 128, 4) # I frame count in one block 16 / 13
+		# self.a_conv4 = nn.Conv1d(1, 128, 4) # I frame count in one block 16 / 13
 		self.a_fc5 = nn.Linear(1, 128) # client rebuffer flag 1 / 1
 		self.a_fc6 = nn.Linear(1, 128) # cdn rebuffer flag 1 / 1
 		self.a_conv7 = nn.Conv1d(1, 128, 4) # gop sizes of 500 K 16 / 13
 		self.a_conv8 = nn.Conv1d(1, 128, 4) # gop sizes of 1200 K 16 / 13
-		self.a_fc = nn.Linear(69 * 128, 128)
+		self.a_fc = nn.Linear(56 * 128, 128)
 		self.a_actor_linear = nn.Linear(128, self.a_dim)
 
 		# critic model
@@ -25,12 +25,12 @@ class ActorCritic(nn.Module):
 		self.c_fc1 = nn.Linear(1, 128) # last bit rate 1 / 1
 		self.c_conv2 = nn.Conv1d(1, 128, 4)	# throughput 16 / 13
 		self.c_conv3 = nn.Conv1d(1, 128, 4) # block sizes 16 / 13
-		self.c_conv4 = nn.Conv1d(1, 128, 4) # I frame count in one block 16 / 13
+		# self.c_conv4 = nn.Conv1d(1, 128, 4) # I frame count in one block 16 / 13
 		self.c_fc5 = nn.Linear(1, 128) # client rebuffer flag 1 / 1
 		self.c_fc6 = nn.Linear(1, 128) # cdn rebuffer flag 1 / 1
 		self.c_conv7 = nn.Conv1d(1, 128, 4) # gop sizes of 500 K 16 / 13
 		self.c_conv8 = nn.Conv1d(1, 128, 4) # gop sizes of 1200 K 16 / 13
-		self.c_fc = nn.Linear(69 * 128, 128)
+		self.c_fc = nn.Linear(56 * 128, 128)
 		self.c_critic_linear = nn.Linear(128, 1)
 
 
@@ -40,13 +40,13 @@ class ActorCritic(nn.Module):
 		split_1 = F.relu(self.a_fc1(inputs[:, 1:2, -1]))
 		split_2 = F.relu(self.a_conv2(inputs[:, 2:3, 0:16])).view(batch_size, -1)
 		split_3 = F.relu(self.a_conv3(inputs[:, 3:4, 0:16])).view(batch_size, -1)
-		split_4 = F.relu(self.a_conv4(inputs[:, 4:5, 0:16])).view(batch_size, -1)
+		# split_4 = F.relu(self.a_conv4(inputs[:, 4:5, 0:16])).view(batch_size, -1)
 		split_5 = F.relu(self.a_fc5(inputs[:, 5:6, -1]))
 		split_6 = F.relu(self.a_fc6(inputs[:, 6:7, -1]))
 		split_7 = F.relu(self.a_conv7(inputs[:, 7:8, 0:16])).view(batch_size, -1)
 		split_8 = F.relu(self.a_conv8(inputs[:, 8:9, 0:16])).view(batch_size, -1)
 
-		merge = torch.cat((split_0, split_1, split_2, split_3, split_4, split_5, split_6, split_7, split_8), 1)
+		merge = torch.cat((split_0, split_1, split_2, split_3, split_5, split_6, split_7, split_8), 1)
 		merge = merge.view(batch_size, -1)
 		fc_out = F.relu(self.a_fc(merge))
 		logit = self.a_actor_linear(fc_out)
@@ -56,13 +56,13 @@ class ActorCritic(nn.Module):
 		split_1 = F.relu(self.c_fc1(inputs[:, 1:2, -1]))
 		split_2 = F.relu(self.c_conv2(inputs[:, 2:3, 0:16])).view(batch_size, -1)
 		split_3 = F.relu(self.c_conv3(inputs[:, 3:4, 0:16])).view(batch_size, -1)
-		split_4 = F.relu(self.c_conv4(inputs[:, 4:5, 0:16])).view(batch_size, -1)
+		# split_4 = F.relu(self.c_conv4(inputs[:, 4:5, 0:16])).view(batch_size, -1)
 		split_5 = F.relu(self.c_fc5(inputs[:, 5:6, -1]))
 		split_6 = F.relu(self.c_fc6(inputs[:, 6:7, -1]))
 		split_7 = F.relu(self.c_conv7(inputs[:, 7:8, 0:16])).view(batch_size, -1)
 		split_8 = F.relu(self.c_conv8(inputs[:, 8:9, 0:16])).view(batch_size, -1)
 
-		merge = torch.cat((split_0, split_1, split_2, split_3, split_4, split_5, split_6, split_7, split_8), 1)
+		merge = torch.cat((split_0, split_1, split_2, split_3, split_5, split_6, split_7, split_8), 1)
 		merge = merge.view(batch_size, -1)
 		fc_out = F.relu(self.c_fc(merge))
 		v = self.c_critic_linear(fc_out)

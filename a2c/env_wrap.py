@@ -77,11 +77,11 @@ class EnvWrap(env.Environment):
 		self.state_gop[1, -1] = self.args.bitrate[self.last_bit_rate] / 1000 # last bitrate [0, 2] [fc]
 		self.state_gop[2, -1] = thp # last throughput Mbps [0, 10] [conv]
 		self.state_gop[3, -1] = block_size # last block sizes [conv]
-		self.state_gop[4, -1] = self.frame_types.count(1) # record I frames count in one block. [conv] 
-		self.state_gop[5, -1] = (1 if buffer_flag else 0) # if True, no buffering content, should choose target buffer as 0. [fc]
-		self.state_gop[6, -1] = (1 if cdn_flag else 0) # if True, no content on cdn server. [fc]
-		self.state_gop[7, :] = np.array(self.gop_sizes[0][:16]) / 1000000 # gop sizes of 500k [conv]
-		self.state_gop[8, :] = np.array(self.gop_sizes[1][:16]) / 1000000 # gop sizes of 1200k [conv]
+		# self.state_gop[4, -1] = self.frame_types.count(1) # record I frames count in one block. [conv] 
+		self.state_gop[4, -1] = (1 if buffer_flag else 0) # if True, no buffering content, should choose target buffer as 0. [fc]
+		self.state_gop[5, -1] = (1 if cdn_flag else 0) # if True, no content on cdn server. [fc]
+		self.state_gop[6, :] = np.array(self.gop_sizes[0][:16]) / 1000000 # gop sizes of 500k [conv]
+		self.state_gop[7, :] = np.array(self.gop_sizes[1][:16]) / 1000000 # gop sizes of 1200k [conv]
 
 	# return gop state
 	def step_gop(self, action):
